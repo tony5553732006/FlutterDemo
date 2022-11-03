@@ -40,13 +40,10 @@ class _WebViewPageState extends State<WebViewPage> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     String initialUrl = Get.arguments['webUrl'];
-    debugPrint('webUrl = ' + initialUrl);
-    debugPrint('webUrl = ' + Uri.file(initialUrl).toString());
 
     return WebView(
-      // initialUrl: initialUrl,
-      // initialUrl: Uri.file(initialUrl).toString(),
-      // initialUrl: 'about:blank',
+      // initialUrl: 'http://127.0.0.1:8080/',
+      initialUrl: 'localhost:8080/s1u01a/index.html?token=221103143833940UTOKEN72E353',
       javascriptMode: JavascriptMode.unrestricted,
       javascriptChannels: {
         //Js調用JSInterface.postMessage("");
@@ -61,7 +58,7 @@ class _WebViewPageState extends State<WebViewPage> with AutomaticKeepAliveClient
       onWebViewCreated: (WebViewController webViewController) {
         _controller.complete(webViewController);
         //Loads the file located at the specified absoluteFilePath.
-        webViewController.loadFile(initialUrl);
+        // webViewController.loadFile(initialUrl);
       },
       navigationDelegate: (NavigationRequest request) {
         return NavigationDecision.navigate;

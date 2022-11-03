@@ -27,7 +27,7 @@ class _DownloadPageState extends State<DownloadPage> {
   final ReceivePort _port = ReceivePort();
   static const String _portName = 'downloader_send_port';
 
-  String downloadUrl = 'https://hkqn.zyosoft.cn/psnext/layatest_s2/s1u01a.zip?version=2022103101';
+  String downloadUrl = 'https://hkqn.zyosoft.cn/psnext/layatest_s2/s1u01a.zip?version=2022110301';
   String fileName = '';
   String saveDir = '';
   String savePath = '';
@@ -58,6 +58,7 @@ class _DownloadPageState extends State<DownloadPage> {
 
       setState((){
         _percent = progress.toDouble();
+        debugPrint('percent = ' + _percent.toString());
       });
     });
 
@@ -131,6 +132,7 @@ class _DownloadPageState extends State<DownloadPage> {
   }
 
   void _unZip() async {
+    debugPrint('開始解壓縮');
     // Read the Zip file from disk.
     final bytes = File(savePath).readAsBytesSync();
     // Decode the Zip file
@@ -166,8 +168,9 @@ class _DownloadPageState extends State<DownloadPage> {
             LinearPercentIndicator(
               width: 250,
               lineHeight: 20,
-              animation: false,
+              animation: true,
               animationDuration: 0,
+              linearStrokeCap: LinearStrokeCap.butt,
               padding: const EdgeInsets.symmetric(horizontal: 0),
               percent: _percent / 100,
               center: Text("${_percent.toString()}%"),
