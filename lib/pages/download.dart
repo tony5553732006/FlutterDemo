@@ -9,7 +9,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as Path;
-import 'package:percent_indicator/linear_percent_indicator.dart';
+// import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 
@@ -27,7 +27,8 @@ class _DownloadPageState extends State<DownloadPage> {
   final ReceivePort _port = ReceivePort();
   static const String _portName = 'downloader_send_port';
 
-  String downloadUrl = 'https://hkqn.zyosoft.cn/psnext/layatest_s2/s1u01a.zip?version=2022110301';
+  String downloadUrl =
+      'https://hkqn.zyosoft.cn/psnext/layatest_s2/s1u01a.zip?version=2022110301';
   String fileName = '';
   String saveDir = '';
   String savePath = '';
@@ -56,7 +57,7 @@ class _DownloadPageState extends State<DownloadPage> {
         debugPrint('下載失敗，請稍後再試');
       }
 
-      setState((){
+      setState(() {
         _percent = progress.toDouble();
         debugPrint('percent = ' + _percent.toString());
       });
@@ -165,17 +166,38 @@ class _DownloadPageState extends State<DownloadPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('檔案路徑:\n' + downloadUrl),
-            LinearPercentIndicator(
-              width: 250,
-              lineHeight: 20,
-              animation: true,
-              animationDuration: 0,
-              linearStrokeCap: LinearStrokeCap.butt,
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              percent: _percent / 100,
-              center: Text("${_percent.toString()}%"),
-              progressColor: Colors.red,
+            Stack(
+              children: [
+                LinearProgressIndicator(
+                  minHeight: 20,
+                  backgroundColor: Colors.grey[200],
+                  valueColor: const AlwaysStoppedAnimation(Colors.red),
+                  value: _percent / 100,
+                  semanticsValue: _percent.toString(),
+                ),
+                Positioned(
+                  top: 0,
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: Center(
+                    child: Text("${_percent.toString()}%"),
+                  ),
+                )
+              ],
             ),
+
+            // LinearPercentIndicator(
+            //   width: 250,
+            //   lineHeight: 20,
+            //   animation: true,
+            //   animationDuration: 0,
+            //   linearStrokeCap: LinearStrokeCap.butt,
+            //   padding: const EdgeInsets.symmetric(horizontal: 0),
+            //   percent: _percent / 100,
+            //   center: Text("${_percent.toString()}%"),
+            //   progressColor: Colors.red,
+            // ),
             ElevatedButton(
                 onPressed: () async {
                   bool isGranted = await _checkPermission(Permission.storage);
@@ -192,9 +214,8 @@ class _DownloadPageState extends State<DownloadPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           saveDir = await _getSaveDirectory();
-          Get.toNamed(Routes.webView, arguments: {
-            'webUrl': saveDir+"/"+"s1u01a/index.html"
-          });
+          Get.toNamed(Routes.webView,
+              arguments: {'webUrl': saveDir + "/" + "s1u01a/index.html"});
         },
         child: const Icon(Icons.add),
       ),

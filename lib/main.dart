@@ -66,17 +66,28 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  //獲取儲存路徑
+  Future<String> _getSaveDirectory() async {
+    //因為Apple沒有外接儲存，所以第一步我們需要先對所在平臺進行判斷
+    //如果是android，使用getExternalStorageDirectory
+    //如果是iOS，使用getApplicationSupportDirectory
+    final directory = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationSupportDirectory();
+    return directory!.path;
+  }
+
   void _startServer() async {
     if (server != null) {
       return;
     }
     debugPrint('startServer');
-    var dir = await getExternalStorageDirectory();
-    debugPrint('dir = ' + dir!.path);
+    var dir = await _getSaveDirectory();
+    debugPrint('dir = ' + dir);
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, 8080);
     // server = await HttpServer.bind('127.0.0.1', 8080);
 
-    var virDir = VirtualDirectory(dir.path);
+    var virDir = VirtualDirectory(dir);
     virDir.allowDirectoryListing = true;
 
     debugPrint("Server running on IP : " +
@@ -88,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
     await server!.forEach((HttpRequest request) {
       var uri = request.uri;
       debugPrint("uri = " + uri.toString());
-      debugPrint("filePath = " + dir.path +  uri.toString());
+      debugPrint("filePath = " + dir + uri.toString());
       virDir.serveRequest(request);
 
       // request.response.headers.contentType =
@@ -117,9 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-
-        },
+        onPressed: () {},
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

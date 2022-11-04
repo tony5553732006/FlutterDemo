@@ -58,7 +58,7 @@ dependencies:
   webview_flutter: ^2.4.0
   # percent indicator
 #  percent_indicator: 4.2.2
-  percent_indicator: 2.1.9
+  # percent_indicator: 2.1.9
 #  # dhttpd
 #  dhttpd: ^4.0.1
   # http server
