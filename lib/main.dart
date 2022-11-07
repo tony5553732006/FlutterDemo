@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
     //如果是iOS，使用getApplicationSupportDirectory
     final directory = Platform.isAndroid
         ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
+        : await getApplicationDocumentsDirectory();
     return directory!.path;
   }
 

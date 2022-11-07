@@ -88,7 +88,7 @@ class _DownloadPageState extends State<DownloadPage> {
     //如果是iOS，使用getApplicationSupportDirectory
     final directory = Platform.isAndroid
         ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
+        : await getApplicationDocumentsDirectory();
     return directory!.path;
   }
 

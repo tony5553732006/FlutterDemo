@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -8,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
 /// webView
 /// Created by tony on 2022/10/31
 ///
@@ -19,9 +19,10 @@ class WebViewPage extends StatefulWidget {
   _WebViewPageState createState() => _WebViewPageState();
 }
 
-class _WebViewPageState extends State<WebViewPage> with AutomaticKeepAliveClientMixin {
+class _WebViewPageState extends State<WebViewPage>
+    with AutomaticKeepAliveClientMixin {
   final Completer<WebViewController> _controller =
-  Completer<WebViewController>();
+      Completer<WebViewController>();
 
   @override
   bool get wantKeepAlive => true;
@@ -40,18 +41,17 @@ class _WebViewPageState extends State<WebViewPage> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     String initialUrl = Get.arguments['webUrl'];
+    debugPrint('webUrl = ' + initialUrl);
 
     return WebView(
       // initialUrl: 'http://127.0.0.1:8080/',
-      initialUrl: 'localhost:8080/s1u01a/index.html?token=221103143833940UTOKEN72E353',
+      initialUrl:
+          'http://localhost:8080/s1u01a/index.html?token=221103143833940UTOKEN72E353',
       javascriptMode: JavascriptMode.unrestricted,
       javascriptChannels: {
         //Js調用JSInterface.postMessage("");
         JavascriptChannel(
-            name: "JSInterface",
-            onMessageReceived: (message) async {
-
-            }),
+            name: "JSInterface", onMessageReceived: (message) async {}),
       },
       initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
       allowsInlineMediaPlayback: true,
